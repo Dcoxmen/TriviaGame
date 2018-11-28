@@ -117,11 +117,12 @@ $(document).ready(function() {
     }
   }
   //Reset timer function display
+
   function timerReset() {
     timeLeft = 10;
     $("#time-left").html("Time remaining: " + timeLeft + " seconds");
   }
-  //Display timer function
+  //Display review title in time-left div
   function displayTimer() {
     $("#time-left").html("Your Holiday Knowledge Review");
   }
@@ -174,6 +175,8 @@ $(document).ready(function() {
     //Start the game
     $("#start-button").on("click", function(event) {
       event.preventDefault();
+      var tryAgain = $("#try-again");
+      tryAgain.empty();
       //Displays the first question and reset timer
       startQuestion();
       timerReset();
@@ -210,6 +213,9 @@ $(document).ready(function() {
     //Restart game
     $("#restart-button").on("click", function(event) {
       event.preventDefault();
+      $("#try-again").html(
+        "Yo! Ho! Ho! Good Job! Time is reset. Let's try again!"
+      );
       //Displays the first question
       reset();
       questionClear();
