@@ -19,14 +19,17 @@
     <script type="text/javascript" src="assets/js/app.js"></script>
   </head>
   <body>
-    <div class="jumbotron" id="twd-jumbo">
+    <div class="jumbotron" id="myJumbotron">
       <h1 id="heading">Christmas Holiday Trivia Game</h1>
     </div>
 
     <div class="container">
       <div class="col-md-12 text-center">
         <div class="well">
-          <h4 id="time-left">Time remaining: 10 seconds</h4>
+          <h4 id="time-left">
+            Click the Start button below to test your holiday knowledge.<br />
+            You have 10 seconds to answer each question. Good Luck!
+          </h4>
         </div>
       </div>
       <div class="col-md-12"><div id="content"></div></div>
@@ -34,12 +37,12 @@
         <form>
           <div class="form-group">
             <div class="radio">
-              <h4 class="questionX"></h4>
+              <h4 class="marked-question"></h4>
               <div id="responses"></div>
             </div>
           </div>
           <br /><br />
-          <div id="submit-div"></div>
+          <div id="submit-btn"></div>
         </form>
       </div>
     </div>

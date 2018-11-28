@@ -1,9 +1,9 @@
 $(document).ready(function() {
   //Empty variable for counter
-  var questionCounter = 0;
+  var questCount = 0;
 
-  // variable for timeout
-  var answerTimeout = 2000;
+  // variable for timeout length between questions
+  var answerTimeout = 3000;
 
   //Empty score variables
   var correct = 0;
@@ -13,12 +13,12 @@ $(document).ready(function() {
   //This is an empty userAnswer array to be filled.
   var userAnswer = [];
 
-  //Array of questions grouped by question, choices and choicesAnswer
+  //Array of question objects grouped by question, choices and answerChoice
   var questions = [
     {
       question: "The real St. Nicholas was born in what modern-day country?",
       choices: ["Germany", "Iraq", "Turkey", "Sweden"],
-      choicesAnswer: 2
+      answerChoice: 2
     },
     {
       question:
@@ -30,7 +30,7 @@ $(document).ready(function() {
         "Montgomery Ward",
         "Saks Fifth Ave"
       ],
-      choicesAnswer: 3
+      answerChoice: 3
     },
     {
       question:
@@ -41,7 +41,7 @@ $(document).ready(function() {
         "Joy to the World",
         "Frosty the Snowman"
       ],
-      choicesAnswer: 0
+      answerChoice: 0
     },
     {
       question: "Eggnog was first consumed in what U.S. city?",
@@ -51,7 +51,7 @@ $(document).ready(function() {
         "Boston, Massachusetts",
         "New York, New York"
       ],
-      choicesAnswer: 1
+      answerChoice: 1
     },
     {
       question: "Who tried to steal Christmas from the Whos of Whoville?",
@@ -62,18 +62,18 @@ $(document).ready(function() {
         "Grinch",
         "Horton Who"
       ],
-      choicesAnswer: 3
+      answerChoice: 3
     },
     {
       question: "Which State produces the most of the nations Christmas Trees?",
       choices: ["Massachusetts", "Oregon", "Washington", "New York"],
-      choicesAnswer: 1
+      answerChoice: 1
     },
     {
       question:
         "In The Twelve Days of Christmas, there are how many drummers drumming?",
       choices: ["12", "8", "11", "4", "7"],
-      choicesAnswer: 0
+      answerChoice: 0
     }
   ];
 
@@ -84,20 +84,20 @@ $(document).ready(function() {
       userAnswer.length = 0;
 
       //Push user answer value to question
-      var userSelection = $(
+      var userPick = $(
         "#responses input:radio[name=optionsRadios]:checked"
       ).val();
-      userAnswer.push(userSelection);
+      userAnswer.push(userPick);
       console.log(userAnswer);
-      nextQ();
+      nextQuestion();
     });
   }
 
-  //Timer variable and increment variable that uses runTimer and decrement functions. Adjust question lenght in timeleft variable
+  //Timer variable and increment variable that uses timerRun and decrement functions. Adjust question length in timeleft variable
   var timeLeft = 10;
   var increment;
 
-  function runTimer() {
+  function timerRun() {
     increment = setInterval(decrement, 1000);
   }
 
@@ -105,28 +105,28 @@ $(document).ready(function() {
     timeLeft--;
     $("#time-left").html("Time remaining: " + timeLeft + " seconds");
     if (timeLeft === 0) {
-      stopTimer();
+      timerStop();
       userAnswer.length = 0;
       //Push user answer to question
-      var userSelection = $(
+      var userPick = $(
         "#responses input:radio[name=optionsRadios]:checked"
       ).val();
-      userAnswer.push(userSelection);
+      userAnswer.push(userPick);
       console.log(userAnswer);
-      nextQ();
+      nextQuestion();
     }
   }
   //Reset timer function display
-  function resetTimer() {
+  function timerReset() {
     timeLeft = 10;
     $("#time-left").html("Time remaining: " + timeLeft + " seconds");
   }
   //Display timer function
   function displayTimer() {
-    $("#time-left").html("Answer Review");
+    $("#time-left").html("Your Holiday Knowledge Review");
   }
   //Stop Timer function
-  function stopTimer() {
+  function timerStop() {
     clearInterval(increment);
   }
 
@@ -136,31 +136,31 @@ $(document).ready(function() {
     //Empty array for user answer
     responseOptions.empty();
 
-    for (var i = 0; i < questions[questionCounter].choices.length; i++) {
+    for (var i = 0; i < questions[questCount].choices.length; i++) {
       responseOptions.append(
         '<label><input type="radio" name="optionsRadios" id="optionsRadios2" value="' +
           [i] +
           '"><div class="twd-opt">' +
-          questions[questionCounter].choices[i] +
+          questions[questCount].choices[i] +
           "</div></input><br></label>"
       );
     }
   }
 
   //Function to display the question
-  function displayQ() {
-    clearQ();
-    resetTimer();
-    $(".questionX").html(questions[questionCounter].question);
+  function questionDisplay() {
+    questionClear();
+    timerReset();
+    $(".marked-question").html(questions[questCount].question);
     //Calling the function to display response radio button
     createRadios();
     //Creating submit button
-    $("#submit-div").append(
+    $("#submit-btn").append(
       '<button type="submit" class="btn btn-default" id="submit">' +
         "Submit" +
         "</button>"
     );
-    runTimer();
+    timerRun();
     submitAnswer();
   }
 
@@ -175,24 +175,24 @@ $(document).ready(function() {
     $("#start-button").on("click", function(event) {
       event.preventDefault();
       //Displays the first question and reset timer
-      firstQ();
-      resetTimer();
+      startQuestion();
+      timerReset();
     });
   }
 
   //Reset for end of game zero out all variables and reset timer
   function reset() {
-    questionCounter = 0;
+    questCount = 0;
     correct = 0;
     incorrect = 0;
     missed = 0;
     userAnswer = [];
-    resetTimer();
+    timerReset();
   }
 
   //Display end of game results.
   function displayEnd() {
-    clearQ();
+    questionClear();
     $("#content").append(
       "<h3>" +
         "Correct answers: " +
@@ -212,36 +212,36 @@ $(document).ready(function() {
       event.preventDefault();
       //Displays the first question
       reset();
-      clearQ();
+      questionClear();
       displayStart();
     });
   }
 
   //Function to clear the question
-  function clearQ() {
-    var questionDiv = $(".questionX");
+  function questionClear() {
+    var questionDiv = $(".marked-question");
     questionDiv.empty();
 
     var responsesDiv = $("#responses");
     responsesDiv.empty();
 
-    var submitDiv = $("#submit-div");
+    var submitDiv = $("#submit-btn");
     submitDiv.empty();
 
     var contentDiv = $("#content");
     contentDiv.empty();
 
-    stopTimer();
+    timerStop();
   }
 
   //Showing whether answer was right/wrong
-  function checkQ() {
-    clearQ();
-    var correctAnswer = questions[questionCounter].choicesAnswer;
+  function questionCheck() {
+    questionClear();
+    var correctAnswer = questions[questCount].answerChoice;
     //if correct append congats and add correct score
-    if (userAnswer[0] == questions[questionCounter].choicesAnswer) {
+    if (userAnswer[0] == questions[questCount].answerChoice) {
       $("#content").append(
-        "<h3>" + "Congratulations! You chose the right answer!" + "</h3>"
+        "<h3>" + "Correct answer! You are a christmas genius!" + "</h3>"
       );
       correct++;
       displayTimer();
@@ -249,10 +249,10 @@ $(document).ready(function() {
     } else if (userAnswer[0] === undefined) {
       $("#content").append(
         "<h3>" +
-          "Time's up!" +
+          "You are Out of Time!" +
           "</h3><br><br><h3>" +
           "The correct answer was: " +
-          questions[questionCounter].choices[correctAnswer] +
+          questions[questCount].choices[correctAnswer] +
           "</h3>"
       );
       missed++;
@@ -261,10 +261,10 @@ $(document).ready(function() {
     } else {
       $("#content").append(
         "<h3>" +
-          "You chose the wrong answer." +
+          "Sorry, wrong answer." +
           "</h3><br><br><h3>" +
-          "The correct answer was: " +
-          questions[questionCounter].choices[correctAnswer] +
+          "The correct answer: " +
+          questions[questCount].choices[correctAnswer] +
           "</h3>"
       );
       incorrect++;
@@ -273,23 +273,23 @@ $(document).ready(function() {
   }
 
   //Function to change the question
-  function nextQ() {
-    checkQ();
+  function nextQuestion() {
+    questionCheck();
     //Incrementing the question count by 1
-    questionCounter++;
+    questCount++;
     //If the count is the same as the length of the question array, the counts reset to 0
-    if (questionCounter === questions.length) {
+    if (questCount === questions.length) {
       setTimeout(displayEnd, answerTimeout);
     } else {
-      setTimeout(displayQ, answerTimeout);
+      setTimeout(questionDisplay, answerTimeout);
     }
   }
 
   //Function to go to the first question
-  function firstQ() {
+  function startQuestion() {
     var startContent = $("#content");
     startContent.empty();
-    displayQ();
+    questionDisplay();
   }
 
   //Displays the start of game
