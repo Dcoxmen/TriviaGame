@@ -1,8 +1,8 @@
 $(document).ready(function() {
-  //Creating variable to track the question & "slide" numbers
+  //Empty variable for counter
   var questionCounter = 0;
 
-  // timeout
+  // variable for timeout
   var answerTimeout = 2000;
 
   //Empty score variables
@@ -93,7 +93,7 @@ $(document).ready(function() {
     });
   }
 
-  //Timer variable and increment variable that uses runTimer and decrement functions.
+  //Timer variable and increment variable that uses runTimer and decrement functions. Adjust question lenght in timeleft variable
   var timeLeft = 10;
   var increment;
 
@@ -164,7 +164,7 @@ $(document).ready(function() {
     submitAnswer();
   }
 
-  //Display start of game
+  //Display start of game and display start button
   function displayStart() {
     $("#content").append(
       '<a href="#" class="btn btn-primary btn-lg" id="start-button">' +
@@ -174,13 +174,13 @@ $(document).ready(function() {
     //Start the game
     $("#start-button").on("click", function(event) {
       event.preventDefault();
-      //Displays the first question
+      //Displays the first question and reset timer
       firstQ();
       resetTimer();
     });
   }
 
-  //Reset for end of game
+  //Reset for end of game zero out all variables and reset timer
   function reset() {
     questionCounter = 0;
     correct = 0;
@@ -238,12 +238,14 @@ $(document).ready(function() {
   function checkQ() {
     clearQ();
     var correctAnswer = questions[questionCounter].choicesAnswer;
+    //if correct append congats and add correct score
     if (userAnswer[0] == questions[questionCounter].choicesAnswer) {
       $("#content").append(
         "<h3>" + "Congratulations! You chose the right answer!" + "</h3>"
       );
       correct++;
       displayTimer();
+      //displays time expired and correct answer scores missed answer
     } else if (userAnswer[0] === undefined) {
       $("#content").append(
         "<h3>" +
@@ -255,6 +257,7 @@ $(document).ready(function() {
       );
       missed++;
       displayTimer();
+      //displays and counts incorrectly choosen answer
     } else {
       $("#content").append(
         "<h3>" +
@@ -272,7 +275,7 @@ $(document).ready(function() {
   //Function to change the question
   function nextQ() {
     checkQ();
-    //Incrementing the count by 1
+    //Incrementing the question count by 1
     questionCounter++;
     //If the count is the same as the length of the question array, the counts reset to 0
     if (questionCounter === questions.length) {
