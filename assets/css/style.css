@@ -1,0 +1,32 @@
+/*general*/
+body {
+  background-image: url("https://media.giphy.com/media/Cv7wrQjYcd6hO/giphy.gif");
+  font-family: Cambria, Cochin, Georgia, Times, "Times New Roman", serif;
+  font-size: 18px;
+}
+#twd-jumbo {
+  background: url("../images/christmas-colour.png");
+  text-align: center;
+}
+
+#heading {
+  font-weight: bold;
+  background-color: white;
+  opacity: 0.5;
+}
+#quiz {
+  text-align: center;
+}
+.container {
+  text-align: center;
+}
+/*footer*/
+.footer {
+  padding: 30px 0;
+  text-align: right;
+}
+
+/*form*/
+.twd-opt {
+  margin-right: 20px;
+}
